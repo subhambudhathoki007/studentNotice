@@ -37,3 +37,56 @@ public class ChangePassword extends JFrame {
             }
         });
     }
+
+    public ChangePassword(String name) {
+        setBounds(450, 360, 1024, 234);
+        setResizable(false);
+
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        textField = new JTextField();
+        textField.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        textField.setBounds(373, 35, 400, 67);
+        contentPane.add(textField);
+        textField.setColumns(10);
+
+        JButton btnSearch = new JButton("Enter");
+        btnSearch.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+                String pstr = textField.getText();
+                try {
+                    System.out.println("update password name " + name);
+                    System.out.println("update password");
+
+                    Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/login",
+                        "root", "Hyundai_12");
+
+                    PreparedStatement st = (PreparedStatement) con
+                        .prepareStatement("Update student set password=? where name=?");
+
+                    st.setString(1, pstr);
+                    st.setString(2, name);
+                    st.executeUpdate();
+                    JOptionPane.showMessageDialog(btnSearch, "Password has been successfully changed");
+
+                } catch (SQLException sqlException) {
+                    sqlException.printStackTrace();
+                }
+
+            }
+        });
+        btnSearch.setFont(new Font("Tahoma", Font.PLAIN, 29));
+        btnSearch.setBackground(new Color(240, 240, 130));
+        btnSearch.setBounds(438, 127, 170, 59);
+        contentPane.add(btnSearch);
+
+        lblEnterNewPassword = new JLabel("Enter New Password :");
+        lblEnterNewPassword.setFont(new Font("Tahoma", Font.PLAIN, 19));
+        lblEnterNewPassword.setBounds(45, 37, 326, 67);
+        contentPane.add(lblEnterNewPassword);
+    }
+}   
